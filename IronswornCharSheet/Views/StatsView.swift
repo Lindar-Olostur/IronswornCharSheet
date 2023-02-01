@@ -58,6 +58,7 @@ struct StatsView: View {
                                 Text("\(hero.stats.edge)")}
                         } .buttonStyle(HSSButtons())
                             .font(.system(size: 40))
+                            .accessibilityIdentifier("Edge")
                         Text("Edge")
                     }
                     

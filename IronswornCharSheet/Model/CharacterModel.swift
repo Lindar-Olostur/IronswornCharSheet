@@ -85,8 +85,8 @@ struct CharacterStats: Codable {
     var momentum: Int = 2
     var resetMomentum: Int = 2
     var maxMomentum: Int = 10
-    var tracks: [Track] = [Track(id: UUID(), name: "Quests", description: "", rank: 4, currentProgress: 0.0, type: "Legacy", fullfilled: false, forsaken: false, role: ""), Track(id: UUID(), name: "Bonds", description: "", rank: 4, currentProgress: 0.0, type: "Legacy", fullfilled: false, forsaken: false, role: ""), Track(id: UUID(), name: "Discoveries", description: "", rank: 4, currentProgress: 0.0, type: "Legacy", fullfilled: false, forsaken: false, role: "")]//[Track(name: "Popa", rank: 0, currentProgress: 4), Track(name: "Pipa", rank: 3, currentProgress: 2.75)]
-    var assets: [Asset] = []//[Asset(name: "Космический корабль", rank: 3, firstRankText: "Твой вооруженный многоцелевой космолет подходит как для межзвездных так и внутри атмосферных перелетов. Он может с комфортом перевозить несколько человек, имеет место для груза, а также может нести и запускать вспомогательный странспорт. Когда ты Развиваешься, ты можешь потратить опыт на оснащение этого корабля дополнительными модулями.", secondRankText: "Когда ты Завершаешь экспедицию (опасную или выше) и добиваешься супеха, это путешествие усиливает твою связь со своим кораблем и союзниками на ботру. Ты и твои союзники могут отметить 1 тик на своей шкале связей.", thirdRankText: "Когда ты Выдерживаешь повреждения, ты можешь бросить +нрав. Делая так, Получи стресс(-1) в случае частичного успеха или провала.", status: "Состояние: исправен", statIsEnabled: true, statName: "Прочность", statMax: 5, statCurrent: 5), Asset(name: "Глайдер", rank: 1, firstRankText: "Твой вооруженный многоцелевой космолет подходит как для межзвездных так и внутри атмосферных перелетов. Он может с комфортом перевозить несколько человек, имеет место для груза, а также может нести и запускать вспомогательный странспорт. Когда ты Развиваешься, ты можешь потратить опыт на оснащение этого корабля дополнительными модулями.", secondRankText: "", thirdRankText: "", status: "Состояние: исправен", statIsEnabled: false, statName: "Прочность", statMax: 5, statCurrent: 5)]
+    var tracks: [Track] = [Track(id: UUID(), name: "Quests", description: "", rank: 4, currentProgress: 0.0, type: "Legacy", fullfilled: false, forsaken: false, role: ""), Track(id: UUID(), name: "Bonds", description: "", rank: 4, currentProgress: 0.0, type: "Legacy", fullfilled: false, forsaken: false, role: ""), Track(id: UUID(), name: "Discoveries", description: "", rank: 4, currentProgress: 0.0, type: "Legacy", fullfilled: false, forsaken: false, role: "")]
+    var assets: [Asset] = []
     var currentVehicle = "None"
     var impacts: [Impact] = [] {
         didSet { changeResetMomentum() }
@@ -97,6 +97,7 @@ struct CharacterStats: Codable {
         }
     }
     var expSystem = "Vow System"
+    var notes = ""
     
     mutating func changeResetMomentum() {
         maxMomentum = 10 - impacts.count

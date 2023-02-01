@@ -10,6 +10,7 @@ import SwiftUI
 struct EditTrackView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var hero: Hero
+    @FocusState private var fieldIsFocused: Bool
     @State var track: Track
     var trackIndex: Int {
         hero.stats.tracks.firstIndex(where: { $0.id == $track.id}) ?? 0//!
@@ -30,6 +31,7 @@ struct EditTrackView: View {
                     Section(header: Text("Track name")) {
                         TextField("Enter a track name", text: $hero.stats.tracks[trackIndex].name)
                             .font(.system(.headline))
+                            .focused($fieldIsFocused)
                     }
                     Section(header: Text("Choose track rank")) {
                         Picker("track rank", selection: $hero.stats.tracks[trackIndex].rank) {
@@ -41,17 +43,24 @@ struct EditTrackView: View {
                     if hero.stats.tracks[trackIndex].type == "Connection" {
                         Section(header: Text("Connection role")) {
                             TextEditor(text: $hero.stats.tracks[trackIndex].role)
+                                .focused($fieldIsFocused)
                         }
                     }
                     Section(header: Text("Track description")) {
                         TextEditor(text: $hero.stats.tracks[trackIndex].description)
                             .frame(maxHeight: .infinity)
+                            .focused($fieldIsFocused)
                     }
                 }
                 .listStyle(.insetGrouped)
             }
             .navigationBarTitle("Edit progress track", displayMode: .inline)
             .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button("Hide") {
+                        fieldIsFocused = false
+                    }
+                }
                 ToolbarItem {
                     Button {
                         saveTrack()

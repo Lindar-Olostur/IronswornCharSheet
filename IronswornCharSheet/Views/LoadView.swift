@@ -25,14 +25,20 @@ struct LoadView: View {
     
     var body: some View {
         NavigationView {
-            List {
-                ForEach(files, id: \.self) { file in
-                    Text("\((file as NSString).deletingPathExtension)")
-                        .onTapGesture { loadFile(id: file)
-                        }
+            VStack {
+                List {
+                    ForEach(files, id: \.self) { file in
+                        Text("\((file as NSString).deletingPathExtension)")
+                            .onTapGesture { loadFile(id: file)
+                            }
+                    }
+                    .onDelete(perform: deleteFile)
+                    
                 }
-                .onDelete(perform: deleteFile)
-                
+                Spacer()
+                Button("Create new character") {
+                    newCharacter()
+                }
             }
             .onAppear {files = directoryContents()}
             .navigationBarTitle("List of characters", displayMode: .inline)
@@ -54,6 +60,11 @@ struct LoadView: View {
     func loadFile(id: String) {
         hero.writeToFile()
         hero.getData(file: id)
+        self.presentationMode.wrappedValue.dismiss()
+    }
+    func newCharacter() {
+        hero.writeToFile()
+        hero.stats = CharacterStats()
         self.presentationMode.wrappedValue.dismiss()
     }
 }

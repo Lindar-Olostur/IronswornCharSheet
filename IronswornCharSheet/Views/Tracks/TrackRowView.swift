@@ -214,7 +214,7 @@ struct TrackRowView: View {
                     }
                     if track.type != "Legacy" {
                         Text("Description")
-                        
+                        Text(track.description)
                         Divider()
                         if !track.fullfilled {
                             Toggle("Forsaken", isOn: $track.forsaken.animation(.spring()))

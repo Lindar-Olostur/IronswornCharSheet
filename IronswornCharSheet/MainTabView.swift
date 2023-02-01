@@ -29,6 +29,11 @@ struct MainTabView: View {
                     Image(systemName: "rectangle.and.pencil.and.ellipsis")
                     Text("Tracks")
                 }.tag(2)
+            NotesView()
+                .tabItem {
+                    Image(systemName: "pencil")
+                    Text("Notes")
+                }.tag(3)
         } 
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct EditView: View {
     let expSystemTypes = ["Vow System", "Legacy System"]
     @EnvironmentObject var hero: Hero
-    
+    @FocusState private var fieldIsFocused: Bool
     var body: some View {
         NavigationView {
             VStack {
@@ -23,6 +23,7 @@ struct EditView: View {
                     .padding(.vertical, 20)
                 TextField("Enter a new name", text: $hero.stats.name)
                     .textFieldStyle(.roundedBorder)
+                    .focused($fieldIsFocused)
                 Text("STATS")
                     .frame(maxWidth: .infinity)
                     .padding(7)
@@ -114,6 +115,13 @@ struct EditView: View {
                     }
                 } .pickerStyle(.segmented)
                 Spacer()
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button("Hide") {
+                        fieldIsFocused = false
+                    }
+                }
             }
             .padding(10)
             .navigationBarTitle("Edit character", displayMode: .inline)

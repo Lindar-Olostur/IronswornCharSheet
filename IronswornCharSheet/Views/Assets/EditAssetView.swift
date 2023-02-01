@@ -10,6 +10,7 @@ import SwiftUI
 struct EditAssetView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var hero: Hero
+    @FocusState private var fieldIsFocused: Bool
     @State var asset: Asset
     var assetIndex: Int {
         hero.stats.assets.firstIndex(where: { $0.id == $asset.id})!
@@ -23,7 +24,9 @@ struct EditAssetView: View {
                     Section(header: Text("Asset name")) {
                         TextField("Enter asset name", text: $hero.stats.assets[assetIndex].name)
                             .font(.system(.headline))
+                            .focused($fieldIsFocused)
                         TextField("Other", text: $hero.stats.assets[assetIndex].status)
+                            .focused($fieldIsFocused)
                     }
                     Section(header: Text("Asset type")) {
                         Picker("Asset type", selection: $hero.stats.assets[assetIndex].type) {
@@ -38,6 +41,7 @@ struct EditAssetView: View {
                         }
                         if asset.statIsEnabled {
                             TextField("Stat name", text: $hero.stats.assets[assetIndex].statName)
+                                .focused($fieldIsFocused)
                             Stepper("Max stat value: \(hero.stats.assets[assetIndex].statMax)", value: $hero.stats.assets[assetIndex].statMax)
                         }
                     }
@@ -51,14 +55,17 @@ struct EditAssetView: View {
 
                         TextEditor(text: $hero.stats.assets[assetIndex].firstRankText)
                             .frame(minHeight: 150)
+                            .focused($fieldIsFocused)
                         if asset.rank > 1 {
                             TextEditor(text: $hero.stats.assets[assetIndex].secondRankText)
                             .frame(minHeight: 150)
                             .transition(.slide)
+                            .focused($fieldIsFocused)
                         }
                         if asset.rank > 2 {
                             TextEditor(text: $hero.stats.assets[assetIndex].thirdRankText)
-                            .frame(minHeight: 150) }
+                            .frame(minHeight: 150)
+                            .focused($fieldIsFocused) }
                     }
                 }
                 .listStyle(.insetGrouped)
@@ -66,6 +73,11 @@ struct EditAssetView: View {
             }
             .navigationBarTitle("New asset", displayMode: .inline)
             .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button("Hide") {
+                        fieldIsFocused = false
+                    }
+                }
                 ToolbarItem {
                     Button {
                         saveAsset()

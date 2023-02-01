@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NewTrackView: View {
     @Environment(\.presentationMode) var presentationMode
+    @FocusState private var fieldIsFocused: Bool
     @EnvironmentObject var hero: Hero
     @State var track = Track()
     
@@ -29,6 +30,7 @@ struct NewTrackView: View {
                     Section(header: Text("Track name")) {
                         TextField("Enter a track name", text: $track.name)
                             .font(.system(.headline))
+                            .focused($fieldIsFocused)
                     }
                     Section(header: Text("Choose track rank")) {
                         Picker("track rank", selection: $track.rank) {
@@ -40,11 +42,13 @@ struct NewTrackView: View {
                     if track.type == "Connection" {
                         Section(header: Text("Connection role")) {
                             TextEditor(text: $track.role)
+                                .focused($fieldIsFocused)
                         }
                     }
                     Section(header: Text("Track description")) {
                         TextEditor(text: $track.description)
                             .frame(maxHeight: .infinity)
+                            .focused($fieldIsFocused)
                     }
                 }
                 .listStyle(.insetGrouped)
@@ -52,6 +56,11 @@ struct NewTrackView: View {
             }
             .navigationBarTitle("New progress track", displayMode: .inline)
             .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button("Hide") {
+                        fieldIsFocused = false
+                    }
+                }
                 ToolbarItem {
                     Button {
                         addNewTrack()

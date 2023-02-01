@@ -11,6 +11,7 @@ struct NewAssetView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var hero: Hero
     @State var asset = Asset()
+    @FocusState private var fieldIsFocused: Bool
 
     let rank = [1, 2, 3]
     
@@ -22,7 +23,9 @@ struct NewAssetView: View {
                     Section(header: Text("Asset name")) {
                         TextField("Enter asset name", text: $asset.name)
                             .font(.system(.headline))
+                            .focused($fieldIsFocused)
                         TextField("Other", text: $asset.status)
+                            .focused($fieldIsFocused)
                     }
                     Section(header: Text("Asset type")) {
                         Picker("Asset type", selection: $asset.type) {
@@ -38,6 +41,7 @@ struct NewAssetView: View {
                         }
                         if asset.statIsEnabled {
                             TextField("Stat name", text: $asset.statName)
+                                .focused($fieldIsFocused)
                             Stepper("Max stat value: \(asset.statMax)", value: $asset.statMax)
                         }
                     }
@@ -51,14 +55,17 @@ struct NewAssetView: View {
 
                         TextEditor(text: $asset.firstRankText)
                             .frame(minHeight: 150)
+                            .focused($fieldIsFocused)
                         if asset.rank > 1 {
                             TextEditor(text: $asset.secondRankText)
                             .frame(minHeight: 150)
                             .transition(.slide)
+                            .focused($fieldIsFocused)
                         }
                         if asset.rank > 2 {
                             TextEditor(text: $asset.thirdRankText)
-                            .frame(minHeight: 150) }
+                            .frame(minHeight: 150)
+                            .focused($fieldIsFocused) }
                     }
                 }
                 .listStyle(.insetGrouped)
@@ -66,6 +73,11 @@ struct NewAssetView: View {
             }
             .navigationBarTitle("New asset", displayMode: .inline)
             .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button("Hide") {
+                        fieldIsFocused = false
+                    }
+                }
                 ToolbarItem {
                     Button {
                         addNewAsset()

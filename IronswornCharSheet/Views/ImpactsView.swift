@@ -15,6 +15,7 @@ extension Array where Element: Hashable {
 }
 
 struct ImpactsView: View {
+    @FocusState private var fieldIsFocused: Bool
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var hero: Hero
     @State var impact = Impact()
@@ -60,12 +61,18 @@ struct ImpactsView: View {
                     }
                     if impact.type != "Misfortunes" && impact.type != "Burdens" {
                         Section(header: Text("Impact name")) {
-                            TextField("Enter impact name", text: $impact.name) }
+                            TextField("Enter impact name", text: $impact.name)
+                            .focused($fieldIsFocused) }
                     }
                 } .listStyle(.insetGrouped)
             }
             .navigationBarTitle("New impact", displayMode: .inline)
             .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button("Hide") {
+                        fieldIsFocused = false
+                    }
+                }
                 ToolbarItem {
                     Button {
                         if impact.name == "" {
